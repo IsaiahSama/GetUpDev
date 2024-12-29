@@ -22,6 +22,7 @@ Project should have a simple design. On first run, program will provide a home m
 - Whether to use Text to Speech or not
 - Whether to use male or female tts voice.
 - Start and stop buttons to control the application.
+- Lockin button to disable timer for 1 hour with a 30 minute cooldown.
 - Display with the amount of minutes and seconds until the next break
 
 The popup window should also have a simple UI consisting of the following elements:
