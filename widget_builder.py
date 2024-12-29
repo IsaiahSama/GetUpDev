@@ -1,5 +1,7 @@
 """This will be the builder for the TK application."""
 from tkinter import *
+from widget_state import WidgetState
+
 try:
     import winsound
     HAS_WINSOUND = TRUE
@@ -9,7 +11,7 @@ except:
 class WidgetBuilder:
     """This class will take care of calling the code to create the necessary widgets."""
     
-    def __init__(self, root, state):
+    def __init__(self, root: Tk, state: WidgetState):
         self.root = root
         self.state = state
         
@@ -38,17 +40,13 @@ class WidgetBuilder:
         time_frame = Frame(self.root)
         time_frame.pack(anchor=E)
 
-        current_time_label = Label(time_frame, text="Remaining Time:")
-        current_time_label.pack(side = LEFT, fill= BOTH, expand=True)
+        Label(time_frame, text="Remaining Time:").pack(side = LEFT, fill= BOTH, expand=True)
         
-        minute_time_label = Label(time_frame, textvariable=StringVar(value=25))
-        minute_time_label.pack(side = LEFT, fill= BOTH, expand=True)
+        Label(time_frame, textvariable=self.state.minutes).pack(side = LEFT, fill= BOTH, expand=True)
 
-        colon_label = Label(time_frame, text=":")
-        colon_label.pack(side=LEFT)
+        Label(time_frame, text=":").pack(side=LEFT)
 
-        second_time_label = Label(time_frame, textvariable=StringVar(value=37))
-        second_time_label.pack(side = LEFT, fill= BOTH, expand=True)
+        Label(time_frame, textvariable=self.state.seconds).pack(side = LEFT, fill= BOTH, expand=True)
     
     def render_settings(self):
         settings_frame = Frame(self.root)
@@ -60,15 +58,15 @@ class WidgetBuilder:
 
         Label(settings_frame, text="How should I notify you?").pack()
 
-        Entry(settings_frame, width=70, textvariable=StringVar(value="Time to get up and stretch!")).pack()
+        Entry(settings_frame, width=70, textvariable=self.state.notification_message).pack()
 
-        Checkbutton(settings_frame, text="Use tts?", variable=BooleanVar(value=False)).pack()
+        Checkbutton(settings_frame, text="Use tts?", variable=self.state.use_tts).pack()
 
-        Radiobutton(settings_frame, text="No Voice", variable=IntVar(), value=0).pack(side=LEFT, fill=BOTH, expand=True)
+        Radiobutton(settings_frame, text="No Voice", variable=self.state.voice, value=0).pack(side=LEFT, fill=BOTH, expand=True)
 
-        Radiobutton(settings_frame, text="Male", variable=IntVar(), value=1).pack(side=LEFT, fill=BOTH, expand=True)
+        Radiobutton(settings_frame, text="Male", variable=self.state.voice, value=1).pack(side=LEFT, fill=BOTH, expand=True)
 
-        Radiobutton(settings_frame, text="Female", variable=IntVar(), value=2).pack(side=LEFT, fill=BOTH, expand=True)
+        Radiobutton(settings_frame, text="Female", variable=self.state.voice, value=2).pack(side=LEFT, fill=BOTH, expand=True)
     
     def render_action_buttons(self):
         button_frame = Frame(self.root)
@@ -102,13 +100,13 @@ class WidgetBuilder:
         
         window.title("Time to get up!")
         
-        Message(window, textvariable=StringVar(value="Move it!"), width=180).pack()
+        Message(window, textvariable=self.state.notification_message, width=180).pack()
         
         count_frame = Frame(window)
         count_frame.pack(pady=5)
         
         Label(count_frame, text="Number of breaks taken today:").pack(side=LEFT)
-        Label(count_frame, textvariable=StringVar(value=0)).pack(side=LEFT)
+        Label(count_frame, textvariable=self.state.break_count).pack(side=LEFT)
         
         button_frame = Frame(window)
         button_frame.pack()
