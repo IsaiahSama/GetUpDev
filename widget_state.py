@@ -1,5 +1,6 @@
 """This file will be responsible for handling the state of the application"""
 from tkinter import StringVar, IntVar, BooleanVar
+import pyttsx3 as ttsx
 
 class WidgetState:
     """This will be the state of the application"""
@@ -18,6 +19,8 @@ class WidgetState:
     minutes: StringVar
     seconds: StringVar
     active_text: StringVar
+    
+    tts: ttsx.Engine
     
     def __init__(self):
         self.notification_message = StringVar(value="Time to get up and stretch!")
@@ -47,3 +50,14 @@ class WidgetState:
     def update_active(self, active: bool):
         self.active = active
         self.active_text.set("Running" if active else "Not Running")
+        
+    def speak(self):
+        if self.use_tts.get():
+            self.tts = ttsx.init()
+            
+            voices = self.tts.getProperty("voices")
+            self.tts.setProperty("voice", voices[self.voice.get()].id)
+            
+            self.tts.say(self.notification_message.get())
+            self.tts.runAndWait()
+            self.tts.stop()

@@ -76,12 +76,12 @@ class WidgetBuilder:
         Entry(settings_frame, width=70, textvariable=self.state.notification_message).pack()
 
         Checkbutton(settings_frame, text="Use tts?", variable=self.state.use_tts).pack()
+        
+        Label(settings_frame, text="Select Voice:").pack()
 
-        Radiobutton(settings_frame, text="No Voice", variable=self.state.voice, value=0).pack(side=LEFT, fill=BOTH, expand=True)
+        Radiobutton(settings_frame, text="Male", variable=self.state.voice, value=0).pack(side=LEFT, fill=BOTH, expand=True)
 
-        Radiobutton(settings_frame, text="Male", variable=self.state.voice, value=1).pack(side=LEFT, fill=BOTH, expand=True)
-
-        Radiobutton(settings_frame, text="Female", variable=self.state.voice, value=2).pack(side=LEFT, fill=BOTH, expand=True)
+        Radiobutton(settings_frame, text="Female", variable=self.state.voice, value=1).pack(side=LEFT, fill=BOTH, expand=True)
     
     def render_action_buttons(self):
         button_frame = Frame(self.root)
@@ -126,7 +126,7 @@ class WidgetBuilder:
         
         button_frame = Frame(window)
         button_frame.pack()
-        
+                
         def close_window_and_restart_timer():
             self.state.break_count.set(self.state.break_count.get() + 1)
             window.destroy()
@@ -136,5 +136,9 @@ class WidgetBuilder:
         Button(button_frame, text="OK", width=10, bg="green", command=close_window_and_restart_timer).pack(side=LEFT, padx=5)
         
         Button(button_frame, text="Lock in!", width=10, bg="yellow").pack(side=LEFT, padx=5)
+        
+        window.protocol("WM_DELETE_WINDOW", close_window_and_restart_timer)
+        
+        self.state.speak()
         
         self.state.notify.set(False)
