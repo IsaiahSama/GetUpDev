@@ -145,7 +145,7 @@ class WidgetBuilder:
         
         Button(button_frame, text="OK", width=10, bg="green", command=close_window_and_restart_timer).pack(side=LEFT, padx=5)
         
-        Button(button_frame, text="Lock in!", width=10, bg="yellow").pack(side=LEFT, padx=5)
+        Button(button_frame, text="Lock in!", width=10, bg="yellow", command=self.lock_in).pack(side=LEFT, padx=5)
         
         window.protocol("WM_DELETE_WINDOW", close_window_and_restart_timer)
         
@@ -153,12 +153,11 @@ class WidgetBuilder:
         
         self.state.notify.set(False)
         
-    def lock_in(self):
-        if not self.state.active:
-            self.state.alert("You need to start the timer first to lock in!")
-            return
-        
+    def lock_in(self):        
         if self.state.locked_in.get() == False and self.state.lock_in_cooldown.get() == 0:
+            if not self.state.active:
+                self.timer.run()
+                
             self.state.update_locked_in(True)
             self.state.lock_in_cooldown.set(60 * 60)
             self.state.alert("Locking in")
