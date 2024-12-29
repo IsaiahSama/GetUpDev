@@ -152,9 +152,10 @@ class WidgetBuilder:
         
         if self.state.locked_in.get() == False and self.state.lock_in_cooldown.get() == 0:
             self.state.update_locked_in(True)
-            self.state.lock_in_cooldown.set(30 * 60)
+            self.state.lock_in_cooldown.set(60 * 60)
         elif self.state.locked_in.get() == True:
             self.state.update_locked_in(False)
+            self.state.lock_in_cooldown.set(0)
             self.state.alert("Locking out!")
         else:
             self.state.alert("You can't lock in right now!")
