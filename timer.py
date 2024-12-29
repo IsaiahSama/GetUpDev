@@ -22,8 +22,8 @@ class ThreadedTimer:
     def countdown(self):
         initial_time = self.state.interval.get() # Time in minutes
         
-        # current_time = initial_time * 60 # Time in seconds
-        current_time = initial_time # Keeping it as seconds for testing purposes
+        current_time = initial_time * 60 # Time in seconds
+        # current_time = initial_time # Keeping it as seconds for testing purposes
         
         while current_time > 0 and self.state.active:
             sleep(1)
