@@ -82,7 +82,7 @@ class WidgetBuilder:
         tts_frame = Frame(settings_frame)
         tts_frame.pack(expand=TRUE, anchor=CENTER)
 
-        Checkbutton(tts_frame, text="Use tts?", variable=self.state.use_tts).pack(side=LEFT)
+        Checkbutton(tts_frame, text="Use TTS?", variable=self.state.use_tts).pack(side=LEFT)
         
         Checkbutton(tts_frame, text="Read out message notifications?", variable=self.state.alert_with_tts).pack(side=LEFT)
         

@@ -57,10 +57,10 @@ class WidgetState:
         self.active = active
         self.active_text.set("Running" if active else "Not Running")
         
-    def alert(self, message):
+    def alert(self, message, useTTS=True):
         self.alert_text.set(message)
         
-        if self.alert_with_tts.get():
+        if self.alert_with_tts.get() and useTTS:
             self.speak(message)
         
     def speak(self, message: str = None):

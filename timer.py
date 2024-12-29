@@ -34,6 +34,7 @@ class ThreadedTimer:
             
             if self.state.locked_in.get() and self.state.lock_in_cooldown.get() == 0:
                 self.state.update_locked_in(False)
+                self.state.alert("Lock in over! Take a break!")
             
             current_time -= 1
             self.state.update_remaining_time(current_time)
@@ -41,7 +42,7 @@ class ThreadedTimer:
         if not self.state.active:
             self.reset()
         else:
-            self.state.alert("Time's up! Take a break")
+            self.state.alert("Time's up! Take a break", useTTS=False)
             self.state.update_active(False)
             self.state.notify.set(True)
     
