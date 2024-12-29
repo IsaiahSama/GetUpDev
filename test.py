@@ -1,5 +1,11 @@
 from tkinter import *
 
+try:
+    import winsound
+    HAS_WINSOUND = TRUE
+except:
+    HAS_WINSOUND = FALSE
+
 root = Tk()
 root.geometry("620x360")
 root.title("Get up Dev!")
@@ -76,6 +82,10 @@ lockin_button = Button(button_frame, text="Lock in!", width=15, bg="yellow")
 lockin_button.pack(side=LEFT)
 
 def popup_window():
+    
+    if HAS_WINSOUND:
+        winsound.MessageBeep(winsound.MB_ICONEXCLAMATION)
+        
     window = Toplevel()
     
     w = 200
