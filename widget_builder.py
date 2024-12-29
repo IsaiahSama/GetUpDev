@@ -1,6 +1,7 @@
 """This will be the builder for the TK application."""
 from tkinter import *
 from widget_state import WidgetState
+from timer import ThreadedTimer
 
 try:
     import winsound
@@ -11,9 +12,10 @@ except:
 class WidgetBuilder:
     """This class will take care of calling the code to create the necessary widgets."""
     
-    def __init__(self, root: Tk, state: WidgetState):
+    def __init__(self, root: Tk, state: WidgetState, timer: ThreadedTimer):
         self.root = root
         self.state = state
+        self.timer = timer
         
     def build_home_page(self):
         # Create the header
@@ -37,7 +39,15 @@ class WidgetBuilder:
         Message(header_frame, text="Welcome to Get Up Dev! A simple application designed to make sure you don't spend too much consecutive time looking at a screen.", anchor=CENTER, justify=CENTER, width=600).pack()
     
     def render_remaining_time(self):
-        time_frame = Frame(self.root)
+        info_frame = Frame(self.root)
+        info_frame.pack(fill=X)
+        
+        active_frame = Frame(info_frame)
+        active_frame.pack(anchor=W)
+        
+        Label(active_frame, textvariable=self.state.active_text).pack(side = LEFT, fill= BOTH)
+        
+        time_frame = Frame(info_frame)
         time_frame.pack(anchor=E)
 
         Label(time_frame, text="Remaining Time:").pack(side = LEFT, fill= BOTH, expand=True)
@@ -47,6 +57,11 @@ class WidgetBuilder:
         Label(time_frame, text=":").pack(side=LEFT)
 
         Label(time_frame, textvariable=self.state.seconds).pack(side = LEFT, fill= BOTH, expand=True)
+        
+        def run(x, y, z):
+            self.render_popup()
+        
+        self.state.notify.trace_add("write", run)
     
     def render_settings(self):
         settings_frame = Frame(self.root)
@@ -54,7 +69,7 @@ class WidgetBuilder:
 
         Label(settings_frame, text="Set interval time in minutes (10-30)").pack()
 
-        Spinbox(settings_frame, from_=10, to=30).pack()
+        Spinbox(settings_frame, from_=10, to=30, textvariable=self.state.interval).pack()
 
         Label(settings_frame, text="How should I notify you?").pack()
 
@@ -72,15 +87,16 @@ class WidgetBuilder:
         button_frame = Frame(self.root)
         button_frame.pack()
 
-        Button(button_frame, text="Start", width=15, bg="green").pack(side=LEFT)
+        Button(button_frame, text="Start", width=15, bg="green", command=self.timer.run).pack(side=LEFT)
 
-        Button(button_frame, text="Stop", width=15, bg="red").pack(side=LEFT, padx=10)
+        Button(button_frame, text="Stop", width=15, bg="red", command=self.timer.stop).pack(side=LEFT, padx=10)
 
         Button(button_frame, text="Lock in!", width=15, bg="yellow").pack(side=LEFT)
-        
-        Button(button_frame, text="Trigger Popup!", width=15, bg="purple", command=self.render_popup).pack(side=LEFT, padx=10)
     
     def render_popup(self):
+        
+        if self.state.notify.get() == FALSE:
+            return
     
         if HAS_WINSOUND:
             winsound.MessageBeep(winsound.MB_ICONEXCLAMATION)
@@ -111,6 +127,13 @@ class WidgetBuilder:
         button_frame = Frame(window)
         button_frame.pack()
         
-        Button(button_frame, text="OK", width=10, bg="green", command=window.destroy).pack(side=LEFT, padx=5)
+        def close_window_and_restart_timer():
+            window.destroy()
+            self.timer.reset()
+            self.timer.run()
+        
+        Button(button_frame, text="OK", width=10, bg="green", command=close_window_and_restart_timer).pack(side=LEFT, padx=5)
         
         Button(button_frame, text="Lock in!", width=10, bg="yellow").pack(side=LEFT, padx=5)
+        
+        self.state.notify.set(False)

@@ -1,6 +1,7 @@
 from tkinter import *
 from widget_builder import WidgetBuilder
 from widget_state import WidgetState
+from timer import ThreadedTimer
 
 class Main:
     """
@@ -19,8 +20,9 @@ class Main:
         self.root.title("Get up Dev!")
         
         self.state = WidgetState()
+        self.timer = ThreadedTimer(self.state)
         
-        self.widget_builder = WidgetBuilder(self.root, self.state)
+        self.widget_builder = WidgetBuilder(self.root, self.state, self.timer)
         
     def run(self):
         self.widget_builder.build_home_page()
