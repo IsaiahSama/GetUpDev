@@ -1,64 +1,78 @@
 from tkinter import *
 
 root = Tk()
-root.geometry("620x480")
+root.geometry("620x360")
 root.title("Get up Dev!")
 
 heading = Label(root, text="Get up Dev!", font = 70)
 heading.pack()
 
-overview = Message(root, text="Welcome to Get Up Dev! A simple application designed to make sure you don't spend too much consecutive time looking at a screen.")
-overview.pack(padx=0)
+overview = Message(root, text="Welcome to Get Up Dev! A simple application designed to make sure you don't spend too much consecutive time looking at a screen.", anchor=CENTER, justify=CENTER, width=600)
+overview.pack()
 
-current_time_label = Label(root, text="Remaining Time:")
-current_time_label.pack()
+time_frame = Frame(root)
+time_frame.pack(anchor=E)
 
-minute_value = IntVar(value=25)
-second_value = IntVar(value=37)
+current_time_label = Label(time_frame, text="Remaining Time:")
+current_time_label.pack(side = LEFT, fill= BOTH, expand=True)
 
-minute_time_label = Label(root, textvariable=minute_value)
-minute_time_label.pack()
+minute_value = StringVar(value=25)
+second_value = StringVar(value=37)
 
-colon_label = Label(root, text=":")
-colon_label.pack()
+minute_time_label = Label(time_frame, textvariable=minute_value)
+minute_time_label.pack(side = LEFT, fill= BOTH, expand=True)
 
-second_time_label = Label(root, textvariable=second_value)
-second_time_label.pack()
+colon_label = Label(time_frame, text=":")
+colon_label.pack(side=LEFT)
 
-time_label = Label(root, text="Set interval time in minutes (10-30)")
+second_time_label = Label(time_frame, textvariable=second_value)
+second_time_label.pack(side = LEFT, fill= BOTH, expand=True)
+
+settings_frame = Frame(root)
+settings_frame.pack()
+
+time_label = Label(settings_frame, text="Set interval time in minutes (10-30)")
 time_label.pack()
 
-time_entry = Spinbox(root, from_=10, to=30)
+time_entry = Spinbox(settings_frame, from_=10, to=30)
 time_entry.pack()
 
-message_label = Label(root, text="How should I notify you?")
+notif_frame = Frame(settings_frame)
+notif_frame.pack()
+
+message_label = Label(notif_frame, text="How should I notify you?")
 message_label.pack()
 
-message_value = Entry(root)
+notification_message = StringVar(value="Time to get up and stretch!")
+
+message_value = Entry(notif_frame, width=70, textvariable=notification_message)
 message_value.pack()
 
 use_tts = BooleanVar()
 
-use_tts_button = Checkbutton(root, text="Use tts?", variable=use_tts)
+use_tts_button = Checkbutton(settings_frame, text="Use tts?", variable=use_tts)
 use_tts_button.pack()
 
 voice = IntVar(value=0)
 
-no_voice = Radiobutton(root, text="No Voice", variable=voice, value=0)
-male_voice = Radiobutton(root, text="Male", variable=voice, value=1)
-female_voice = Radiobutton(root, text="Female", variable=voice, value=2)
+no_voice = Radiobutton(settings_frame, text="No Voice", variable=voice, value=0)
+male_voice = Radiobutton(settings_frame, text="Male", variable=voice, value=1)
+female_voice = Radiobutton(settings_frame, text="Female", variable=voice, value=2)
 
-no_voice.pack()
-male_voice.pack()
-female_voice.pack()
+no_voice.pack(side=LEFT, fill=BOTH, expand=True)
+male_voice.pack(side=LEFT, fill=BOTH, expand=True)
+female_voice.pack(side=LEFT, fill=BOTH, expand=True)
 
-start_timer_button = Button(root, text="Start", width=15)
-start_timer_button.pack()
+button_frame = Frame(root)
+button_frame.pack()
 
-stop_timer_button = Button(root, text="Stop", width=15)
-stop_timer_button.pack()
+start_timer_button = Button(button_frame, text="Start", width=15, bg="green")
+start_timer_button.pack(side=LEFT)
 
-lockin_button = Button(root, text="Lock in!", width=15)
-lockin_button.pack()
+stop_timer_button = Button(button_frame, text="Stop", width=15, bg="red")
+stop_timer_button.pack(side=LEFT, padx=10)
+
+lockin_button = Button(button_frame, text="Lock in!", width=15, bg="yellow")
+lockin_button.pack(side=LEFT)
 
 root.mainloop()
