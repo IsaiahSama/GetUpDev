@@ -43,12 +43,12 @@ class WidgetBuilder:
         info_frame.pack(fill=X)
         
         active_frame = Frame(info_frame)
-        active_frame.pack(anchor=W)
+        active_frame.pack(anchor=W, padx=10)
         
         Label(active_frame, textvariable=self.state.active_text).pack(side = LEFT, fill= BOTH)
         
         time_frame = Frame(info_frame)
-        time_frame.pack(anchor=E)
+        time_frame.pack(anchor=E, padx=10)
 
         Label(time_frame, text="Remaining Time:").pack(side = LEFT, fill= BOTH, expand=True)
         
@@ -128,6 +128,7 @@ class WidgetBuilder:
         button_frame.pack()
         
         def close_window_and_restart_timer():
+            self.state.break_count.set(self.state.break_count.get() + 1)
             window.destroy()
             self.timer.reset()
             self.timer.run()

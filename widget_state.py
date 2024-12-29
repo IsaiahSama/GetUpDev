@@ -28,7 +28,7 @@ class WidgetState:
         self.remaining_time = IntVar(value=0)
         self.locked_in = BooleanVar(value=False)
         self.lock_in_cooldown = IntVar(value=0)
-        self.break_count = IntVar(value=0)
+        self.break_count = IntVar(value=1)
         self.notify = BooleanVar(value=False)
         
         self.minutes = StringVar(value="--")
