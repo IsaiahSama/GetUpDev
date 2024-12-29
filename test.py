@@ -75,4 +75,35 @@ stop_timer_button.pack(side=LEFT, padx=10)
 lockin_button = Button(button_frame, text="Lock in!", width=15, bg="yellow")
 lockin_button.pack(side=LEFT)
 
+def popup_window():
+    window = Toplevel()
+    
+    w = 200
+    h = 100
+    
+    sw = window.winfo_screenwidth()
+    sh = window.winfo_screenheight()
+    
+    x = (sw - w) // 2
+    y = (sh - h) // 2
+    
+    window.geometry(f"{w}x{h}+{x}+{y}")
+    
+    window.title("Time to get up!")
+    
+    text = Message(window, textvariable=notification_message, width=180)
+    text.pack(pady=15)
+    
+    button_frame = Frame(window)
+    button_frame.pack()
+    
+    ok_button = Button(button_frame, text="OK", width=10, bg="green", command=window.destroy)
+    ok_button.pack(side=LEFT, padx=5)
+    
+    lockin_button = Button(button_frame, text="Lock in!", width=10, bg="yellow")
+    lockin_button.pack(side=LEFT, padx=5)
+    
+trigger_popup_button = Button(root, text="Trigger Popup", width=15, bg="purple", command=popup_window)
+trigger_popup_button.pack(side=LEFT)
+
 root.mainloop()
