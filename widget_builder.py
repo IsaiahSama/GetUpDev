@@ -122,6 +122,7 @@ class WidgetBuilder:
         y = (sh - h) // 2
         
         window.geometry(f"{w}x{h}+{x}+{y}")
+        window.attributes("-topmost", 1)
         
         window.title("Time to get up!")
         
