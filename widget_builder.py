@@ -40,25 +40,27 @@ class WidgetBuilder:
     
     def render_remaining_time(self):
         info_frame = Frame(self.root)
-        info_frame.pack(fill=X)
+        info_frame.pack(anchor=W, padx=10)
         
-        active_frame = Frame(info_frame)
-        active_frame.pack(anchor=W, padx=10)
-        
-        Label(active_frame, textvariable=self.state.active_text).pack(side = LEFT, fill= BOTH)
+        Label(info_frame, textvariable=self.state.active_text).pack(anchor=W)
         
         time_frame = Frame(info_frame)
-        time_frame.pack(anchor=E, padx=10)
-
-        Label(time_frame, text="Remaining Time:").pack(side = LEFT, fill= BOTH, expand=True)
+        time_frame.pack()
         
-        Label(time_frame, textvariable=self.state.minutes).pack(side = LEFT, fill= BOTH, expand=True)
-
-        Label(time_frame, text=":").pack(side=LEFT)
-
-        Label(time_frame, textvariable=self.state.seconds).pack(side = LEFT, fill= BOTH, expand=True)
+        Label(time_frame, text="Remaining Time:").pack(side = LEFT)
+        Label(time_frame, textvariable=self.state.minutes).pack(side = LEFT)
+        Label(time_frame, text=":").pack(side = LEFT)
+        Label(time_frame, textvariable=self.state.seconds).pack(side = LEFT)
         
-        def run(x, y, z):
+        lock_in_frame = Frame(info_frame)
+        lock_in_frame.pack(anchor=W)
+        
+        Label(lock_in_frame, textvariable=self.state.locked_in_text).pack(anchor=W)
+        
+        Label(lock_in_frame, text="Lock in Cooldown:").pack(side = LEFT, anchor=W)
+        Label(lock_in_frame, textvariable=self.state.lock_in_cooldown).pack(side = LEFT, anchor=W)
+        
+        def run(*_):
             self.render_popup()
         
         self.state.notify.trace_add("write", run)
@@ -91,7 +93,7 @@ class WidgetBuilder:
 
         Button(button_frame, text="Stop", width=15, bg="red", command=self.timer.stop).pack(side=LEFT, padx=10)
 
-        Button(button_frame, text="Lock in!", width=15, bg="yellow").pack(side=LEFT)
+        Button(button_frame, text="Lock in!", width=15, bg="yellow", command=self.lock_in).pack(side=LEFT)
     
     def render_popup(self):
         
@@ -142,3 +144,17 @@ class WidgetBuilder:
         self.state.speak()
         
         self.state.notify.set(False)
+        
+    def lock_in(self):
+        if not self.state.active:
+            self.state.alert("You need to start the timer first to lock in!")
+            return
+        
+        if self.state.locked_in.get() == False and self.state.lock_in_cooldown.get() == 0:
+            self.state.update_locked_in(True)
+            self.state.lock_in_cooldown.set(30 * 60)
+        elif self.state.locked_in.get() == True:
+            self.state.update_locked_in(False)
+            self.state.alert("Locking out!")
+        else:
+            self.state.alert("You can't lock in right now!")

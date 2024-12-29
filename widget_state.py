@@ -19,6 +19,8 @@ class WidgetState:
     minutes: StringVar
     seconds: StringVar
     active_text: StringVar
+    locked_in_text: StringVar
+    alert_text: StringVar
     
     tts: ttsx.Engine
     
@@ -37,6 +39,8 @@ class WidgetState:
         self.minutes = StringVar(value="--")
         self.seconds = StringVar(value="--")
         self.active_text = StringVar(value="Not Running")
+        self.locked_in_text = StringVar(value="Not locked in")
+        self.alert_text = StringVar(value="App notifications go here!")
         
     def update_remaining_time(self, remaining_time: int):
         self.remaining_time.set(remaining_time)
@@ -51,13 +55,26 @@ class WidgetState:
         self.active = active
         self.active_text.set("Running" if active else "Not Running")
         
-    def speak(self):
+    def alert(self, message):
+        self.alert_text.set(message)
+        self.speak(message)
+        
+    def speak(self, message: str = None):
+        to_speak = message or self.notification_message.get()
         if self.use_tts.get():
             self.tts = ttsx.init()
             
             voices = self.tts.getProperty("voices")
             self.tts.setProperty("voice", voices[self.voice.get()].id)
             
-            self.tts.say(self.notification_message.get())
+            self.tts.say(to_speak)
             self.tts.runAndWait()
             self.tts.stop()
+            
+    def update_locked_in(self, locked_in: bool):
+        self.locked_in.set(locked_in)
+        
+        if locked_in:
+            self.locked_in_text.set("Locked in!")
+        else:
+            self.locked_in_text.set("Not locked in")

@@ -26,6 +26,15 @@ class ThreadedTimer:
         
         while current_time > 0 and self.state.active:
             sleep(1)
+            
+            if self.state.locked_in.get() and self.state.lock_in_cooldown.get() > 0:
+                print("Updating lock in cooldown")
+                self.state.lock_in_cooldown.set(self.state.lock_in_cooldown.get() - 1)
+                continue
+            
+            if self.state.locked_in.get() and self.state.lock_in_cooldown.get() == 0:
+                self.state.update_locked_in(False)
+            
             current_time -= 1
             self.state.update_remaining_time(current_time)
             
