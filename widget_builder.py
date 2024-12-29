@@ -11,6 +11,7 @@ class WidgetBuilder:
     
     def __init__(self, root, state):
         self.root = root
+        self.state = state
         
     def build_home_page(self):
         # Create the header
@@ -29,11 +30,9 @@ class WidgetBuilder:
         header_frame = Frame(self.root)
         header_frame.pack()
         
-        heading = Label(header_frame, text="Get up Dev!", font = 70)
-        heading.pack()
+        Label(header_frame, text="Get up Dev!", font = 70).pack()
 
-        overview = Message(header_frame, text="Welcome to Get Up Dev! A simple application designed to make sure you don't spend too much consecutive time looking at a screen.", anchor=CENTER, justify=CENTER, width=600)
-        overview.pack()
+        Message(header_frame, text="Welcome to Get Up Dev! A simple application designed to make sure you don't spend too much consecutive time looking at a screen.", anchor=CENTER, justify=CENTER, width=600).pack()
     
     def render_remaining_time(self):
         time_frame = Frame(self.root)
@@ -55,47 +54,33 @@ class WidgetBuilder:
         settings_frame = Frame(self.root)
         settings_frame.pack()
 
-        time_label = Label(settings_frame, text="Set interval time in minutes (10-30)")
-        time_label.pack()
+        Label(settings_frame, text="Set interval time in minutes (10-30)").pack()
 
-        time_entry = Spinbox(settings_frame, from_=10, to=30)
-        time_entry.pack()
+        Spinbox(settings_frame, from_=10, to=30).pack()
 
-        notif_frame = Frame(settings_frame)
-        notif_frame.pack()
+        Label(settings_frame, text="How should I notify you?").pack()
 
-        message_label = Label(settings_frame, text="How should I notify you?")
-        message_label.pack()
+        Entry(settings_frame, width=70, textvariable=StringVar(value="Time to get up and stretch!")).pack()
 
-        message_value = Entry(settings_frame, width=70, textvariable=StringVar(value="Time to get up and stretch!"))
-        message_value.pack()
+        Checkbutton(settings_frame, text="Use tts?", variable=BooleanVar(value=False)).pack()
 
-        use_tts_button = Checkbutton(settings_frame, text="Use tts?", variable=BooleanVar(value=False))
-        use_tts_button.pack()
+        Radiobutton(settings_frame, text="No Voice", variable=IntVar(), value=0).pack(side=LEFT, fill=BOTH, expand=True)
 
-        no_voice = Radiobutton(settings_frame, text="No Voice", variable=IntVar(), value=0)
-        male_voice = Radiobutton(settings_frame, text="Male", variable=IntVar(), value=1)
-        female_voice = Radiobutton(settings_frame, text="Female", variable=IntVar(), value=2)
+        Radiobutton(settings_frame, text="Male", variable=IntVar(), value=1).pack(side=LEFT, fill=BOTH, expand=True)
 
-        no_voice.pack(side=LEFT, fill=BOTH, expand=True)
-        male_voice.pack(side=LEFT, fill=BOTH, expand=True)
-        female_voice.pack(side=LEFT, fill=BOTH, expand=True)
+        Radiobutton(settings_frame, text="Female", variable=IntVar(), value=2).pack(side=LEFT, fill=BOTH, expand=True)
     
     def render_action_buttons(self):
         button_frame = Frame(self.root)
         button_frame.pack()
 
-        start_timer_button = Button(button_frame, text="Start", width=15, bg="green")
-        start_timer_button.pack(side=LEFT)
+        Button(button_frame, text="Start", width=15, bg="green").pack(side=LEFT)
 
-        stop_timer_button = Button(button_frame, text="Stop", width=15, bg="red")
-        stop_timer_button.pack(side=LEFT, padx=10)
+        Button(button_frame, text="Stop", width=15, bg="red").pack(side=LEFT, padx=10)
 
-        lockin_button = Button(button_frame, text="Lock in!", width=15, bg="yellow")
-        lockin_button.pack(side=LEFT)
+        Button(button_frame, text="Lock in!", width=15, bg="yellow").pack(side=LEFT)
         
-        popup_button = Button(button_frame, text="Trigger Popup!", width=15, bg="purple", command=self.render_popup)
-        popup_button.pack(side=LEFT, padx=10)
+        Button(button_frame, text="Trigger Popup!", width=15, bg="purple", command=self.render_popup).pack(side=LEFT, padx=10)
     
     def render_popup(self):
     
@@ -117,8 +102,7 @@ class WidgetBuilder:
         
         window.title("Time to get up!")
         
-        text = Message(window, textvariable=StringVar(value="Move it!"), width=180)
-        text.pack()
+        Message(window, textvariable=StringVar(value="Move it!"), width=180).pack()
         
         count_frame = Frame(window)
         count_frame.pack(pady=5)
@@ -129,8 +113,6 @@ class WidgetBuilder:
         button_frame = Frame(window)
         button_frame.pack()
         
-        ok_button = Button(button_frame, text="OK", width=10, bg="green", command=window.destroy)
-        ok_button.pack(side=LEFT, padx=5)
+        Button(button_frame, text="OK", width=10, bg="green", command=window.destroy).pack(side=LEFT, padx=5)
         
-        lockin_button = Button(button_frame, text="Lock in!", width=10, bg="yellow")
-        lockin_button.pack(side=LEFT, padx=5)
+        Button(button_frame, text="Lock in!", width=10, bg="yellow").pack(side=LEFT, padx=5)
