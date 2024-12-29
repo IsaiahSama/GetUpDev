@@ -37,6 +37,8 @@ class WidgetBuilder:
         Label(header_frame, text="Get up Dev!", font = 70).pack()
 
         Message(header_frame, text="Welcome to Get Up Dev! A simple application designed to make sure you don't spend too much consecutive time looking at a screen.", anchor=CENTER, justify=CENTER, width=600).pack()
+        
+        Message(header_frame, textvariable=self.state.alert_text, fg="red", anchor=CENTER, justify=CENTER, width=400).pack()
     
     def render_remaining_time(self):
         info_frame = Frame(self.root)
@@ -76,8 +78,13 @@ class WidgetBuilder:
         Label(settings_frame, text="How should I notify you?").pack()
 
         Entry(settings_frame, width=70, textvariable=self.state.notification_message).pack()
+        
+        tts_frame = Frame(settings_frame)
+        tts_frame.pack(expand=TRUE, anchor=CENTER)
 
-        Checkbutton(settings_frame, text="Use tts?", variable=self.state.use_tts).pack()
+        Checkbutton(tts_frame, text="Use tts?", variable=self.state.use_tts).pack(side=LEFT)
+        
+        Checkbutton(tts_frame, text="Read out message notifications?", variable=self.state.alert_with_tts).pack(side=LEFT)
         
         Label(settings_frame, text="Select Voice:").pack()
 
@@ -152,10 +159,13 @@ class WidgetBuilder:
         
         if self.state.locked_in.get() == False and self.state.lock_in_cooldown.get() == 0:
             self.state.update_locked_in(True)
-            self.state.lock_in_cooldown.set(60 * 60)
+            self.state.lock_in_cooldown.set(5)
+            self.state.alert("Locking in")
+            
         elif self.state.locked_in.get() == True:
             self.state.update_locked_in(False)
             self.state.lock_in_cooldown.set(0)
             self.state.alert("Locking out!")
+            
         else:
             self.state.alert("You can't lock in right now!")

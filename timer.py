@@ -14,6 +14,7 @@ class ThreadedTimer:
         if self.state.active:
             return
         self.state.update_active(True)
+        self.state.alert("Timer running!")
         
         thread = Thread(target=self.countdown, daemon=True)
         thread.start()
@@ -28,7 +29,6 @@ class ThreadedTimer:
             sleep(1)
             
             if self.state.locked_in.get() and self.state.lock_in_cooldown.get() > 0:
-                print("Updating lock in cooldown")
                 self.state.lock_in_cooldown.set(self.state.lock_in_cooldown.get() - 1)
                 continue
             
@@ -41,11 +41,13 @@ class ThreadedTimer:
         if not self.state.active:
             self.reset()
         else:
+            self.state.alert("Time's up! Take a break")
             self.state.update_active(False)
             self.state.notify.set(True)
     
     def stop(self):
         self.state.update_active(False)
+        self.state.alert("Timer stopped!")
         self.reset()
     
     def reset(self):

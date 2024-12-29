@@ -15,6 +15,7 @@ class WidgetState:
     lock_in_cooldown: IntVar
     break_count: IntVar
     notify: BooleanVar
+    alert_with_tts: BooleanVar
     
     minutes: StringVar
     seconds: StringVar
@@ -35,6 +36,7 @@ class WidgetState:
         self.lock_in_cooldown = IntVar(value=0)
         self.break_count = IntVar(value=1)
         self.notify = BooleanVar(value=False)
+        self.alert_with_tts = BooleanVar(value=False)
         
         self.minutes = StringVar(value="--")
         self.seconds = StringVar(value="--")
@@ -57,7 +59,9 @@ class WidgetState:
         
     def alert(self, message):
         self.alert_text.set(message)
-        self.speak(message)
+        
+        if self.alert_with_tts.get():
+            self.speak(message)
         
     def speak(self, message: str = None):
         to_speak = message or self.notification_message.get()
