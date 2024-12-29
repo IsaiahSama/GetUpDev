@@ -1,5 +1,10 @@
 """This will be the builder for the TK application."""
 from tkinter import *
+try:
+    import winsound
+    HAS_WINSOUND = TRUE
+except:
+    HAS_WINSOUND = FALSE
 
 class WidgetBuilder:
     """This class will take care of calling the code to create the necessary widgets."""
@@ -88,6 +93,44 @@ class WidgetBuilder:
 
         lockin_button = Button(button_frame, text="Lock in!", width=15, bg="yellow")
         lockin_button.pack(side=LEFT)
+        
+        popup_button = Button(button_frame, text="Trigger Popup!", width=15, bg="purple", command=self.render_popup)
+        popup_button.pack(side=LEFT, padx=10)
     
-    def build_popup(self):
-        pass
+    def render_popup(self):
+    
+        if HAS_WINSOUND:
+            winsound.MessageBeep(winsound.MB_ICONEXCLAMATION)
+            
+        window = Toplevel()
+        
+        w = 200
+        h = 100
+        
+        sw = window.winfo_screenwidth()
+        sh = window.winfo_screenheight()
+        
+        x = (sw - w) // 2
+        y = (sh - h) // 2
+        
+        window.geometry(f"{w}x{h}+{x}+{y}")
+        
+        window.title("Time to get up!")
+        
+        text = Message(window, textvariable=StringVar(value="Move it!"), width=180)
+        text.pack()
+        
+        count_frame = Frame(window)
+        count_frame.pack(pady=5)
+        
+        Label(count_frame, text="Number of breaks taken today:").pack(side=LEFT)
+        Label(count_frame, textvariable=StringVar(value=0)).pack(side=LEFT)
+        
+        button_frame = Frame(window)
+        button_frame.pack()
+        
+        ok_button = Button(button_frame, text="OK", width=10, bg="green", command=window.destroy)
+        ok_button.pack(side=LEFT, padx=5)
+        
+        lockin_button = Button(button_frame, text="Lock in!", width=10, bg="yellow")
+        lockin_button.pack(side=LEFT, padx=5)
