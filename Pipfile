@@ -5,6 +5,7 @@ name = "pypi"
 
 [packages]
 pyttsx3 = "*"
+pyinstaller = "*"
 
 [dev-packages]
 
