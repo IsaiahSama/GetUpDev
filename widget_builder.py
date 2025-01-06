@@ -100,7 +100,7 @@ class WidgetBuilder:
 
         Button(button_frame, text="Stop", width=15, bg="red", command=self.timer.stop).pack(side=LEFT, padx=10)
 
-        Button(button_frame, text="Lock in!", width=15, bg="yellow", command=self.lock_in).pack(side=LEFT)
+        Button(button_frame, textvariable=self.state.locked_in_button_text, width=15, bg="yellow", command=self.lock_in).pack(side=LEFT)
     
     def render_popup(self):
         
@@ -145,7 +145,7 @@ class WidgetBuilder:
         
         Button(button_frame, text="OK", width=10, bg="green", command=close_window_and_restart_timer).pack(side=LEFT, padx=5)
         
-        Button(button_frame, text="Lock in!", width=10, bg="yellow", command=self.lock_in).pack(side=LEFT, padx=5)
+        Button(button_frame, textvariable=self.state.locked_in_button_text, width=10, bg="yellow", command=self.lock_in).pack(side=LEFT, padx=5)
         
         window.protocol("WM_DELETE_WINDOW", close_window_and_restart_timer)
         

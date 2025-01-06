@@ -21,6 +21,7 @@ class WidgetState:
     seconds: StringVar
     active_text: StringVar
     locked_in_text: StringVar
+    locked_in_button_text: StringVar
     alert_text: StringVar
     
     tts: ttsx.Engine
@@ -42,6 +43,7 @@ class WidgetState:
         self.seconds = StringVar(value="--")
         self.active_text = StringVar(value="Not Running")
         self.locked_in_text = StringVar(value="Not locked in")
+        self.locked_in_button_text = StringVar(value="Lock In")
         self.alert_text = StringVar(value="App notifications go here!")
         
     def update_remaining_time(self, remaining_time: int):
@@ -79,6 +81,8 @@ class WidgetState:
         self.locked_in.set(locked_in)
         
         if locked_in:
+            self.locked_in_button_text.set("Exit Lock In")
             self.locked_in_text.set("Locked in!")
         else:
+            self.locked_in_button_text.set("Lock in!")
             self.locked_in_text.set("Not locked in")
